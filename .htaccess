@@ -1,0 +1,11 @@
+Options -Indexes
+RewriteEngine On
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+# Block private configuration, documentation, and SQL files from direct access.
+<FilesMatch "^(config\.php|database\.sql|legacy-auth\.sql|API\.md|DEPLOYMENT\.md|API-Documentation\.pdf)$">
+  Require all denied
+</FilesMatch>
+
+# Route API requests to the front controller.
+RewriteRule ^api(?:/.*)?$ api/index.php [QSA,L]
